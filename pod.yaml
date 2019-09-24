@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: echoserver
+spec:
+  containers:
+  - image: k8s.gcr.io/echoserver:1.10
+    name: echoserver
+    env:
+      - name: MY_POD_SERVICE_ACCOUNT
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.serviceAccountName
+  serviceAccountName: pod-robot
+  automountServiceAccountToken: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vaultclient
+spec:
+  containers:
+  - image: k8s.gcr.io/echoserver:1.10
+    name: vaultclient
+  serviceAccountName: vault-auth
+  automountServiceAccountToken: true
