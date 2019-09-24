@@ -10,7 +10,7 @@ Simple tutorial to setup a very basic Vault auth with Kubernetes.  The following
 5. Exchange the application Pod's service account JWT token for a `VAULT_TOKEN`.
 
 
-This tutorial is very basic and just setups a simple configuration. For anytime else, please see [Vault Agent with Kubernetes](https://learn.hashicorp.com/vault/developer/vault-agent-k8s).
+This tutorial is very basic and just setups a simple configuration. For anything else, please see [Vault Agent with Kubernetes](https://learn.hashicorp.com/vault/developer/vault-agent-k8s) and the blog ["Announcing First-Class Kubernetes Support for HashiCorp Products"](https://www.hashicorp.com/blog/first-class-kubernetes-support-for-hashicorp-products).
 
 
 ### Setup
@@ -21,7 +21,6 @@ You'll need on your local system:
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 * [helm](https://helm.sh/)
 * [Vault](https://www.vaultproject.io/downloads.html)
-
 
 
 #### Start Minikube and Install Vault
@@ -365,8 +364,14 @@ Decode the token at [jwt.io](jwt.io) to see
 
 Then use it to call the vault service
 
+```bash
+curl  -s  --request POST  \
+     --data "{\"jwt\": \"$TOKEN\", \"role\": \"example\"}"  \
+     http://vault:8200/v1/auth/kubernetes/login | jq '.' 
+```
+should give:
+
 ```json
-curl  -s  --request POST     --data "{\"jwt\": \"$TOKEN\", \"role\": \"example\"}"     http://vault:8200/v1/auth/kubernetes/login | jq '.' 
 {
   "request_id": "30fc837f-a7c3-64e2-c916-885d343fb9ab",
   "lease_id": "",
